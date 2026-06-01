@@ -4,9 +4,9 @@ import joblib
 import time
 from fpdf import FPDF
 
-# =========================
+# =========================================
 # PAGE CONFIG
-# =========================
+# =========================================
 
 st.set_page_config(
     page_title="AI Flower Prediction",
@@ -15,16 +15,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# =========================
+# =========================================
 # LOAD MODEL
-# =========================
+# =========================================
 
 model = joblib.load("models/best_model.pkl")
 scaler = joblib.load("models/scaler.pkl")
 
-# =========================
-# PDF REPORT
-# =========================
+# =========================================
+# PDF CLASS
+# =========================================
 
 class PDF(FPDF):
 
@@ -76,9 +76,9 @@ class PDF(FPDF):
             align="C"
         )
 
-# =========================
+# =========================================
 # CREATE PDF
-# =========================
+# =========================================
 
 def create_pdf(prediction, confidence):
 
@@ -86,21 +86,29 @@ def create_pdf(prediction, confidence):
 
     pdf.add_page()
 
-    # RESULT BOX
+    # RESULT CARD
     pdf.set_fill_color(30, 41, 59)
 
-    pdf.rounded_rect = lambda x, y, w, h, r, style='': pdf.rect(x, y, w, h, style)
+    pdf.rect(
+        25,
+        80,
+        160,
+        70,
+        'F'
+    )
 
-    pdf.rounded_rect(25, 80, 160, 70, 5, 'F')
-
-    # TITLE
+    # RESULT TITLE
     pdf.set_xy(35, 95)
 
     pdf.set_font("Arial", "B", 18)
 
     pdf.set_text_color(255, 255, 255)
 
-    pdf.cell(100, 10, "Prediction Result")
+    pdf.cell(
+        100,
+        10,
+        "Prediction Result"
+    )
 
     # FLOWER
     pdf.set_xy(35, 115)
@@ -124,19 +132,21 @@ def create_pdf(prediction, confidence):
 
     pdf.output("prediction_report.pdf")
 
-# =========================
+# =========================================
 # CUSTOM CSS
-# =========================
+# =========================================
 
 st.markdown("""
 <style>
 
-/* REMOVE TOP SPACE */
+/* =========================================
+   REMOVE STREAMLIT DEFAULTS
+========================================= */
+
 .block-container {
     padding-top: 1rem !important;
+    padding-bottom: 0rem !important;
 }
-
-/* REMOVE STREAMLIT DEFAULTS */
 
 header[data-testid="stHeader"] {
     background: transparent;
@@ -154,22 +164,19 @@ footer {
     visibility: hidden;
 }
 
-[data-testid="stToolbar"] {
-    display: none !important;
-}
+/* =========================================
+   MAIN BACKGROUND
+========================================= */
 
-/* REMOVE >> BUTTON */
-button[kind="header"] {
-    display: none !important;
-}
-
-/* MAIN BACKGROUND */
 .stApp {
     background: linear-gradient(to right, #020617, #0f172a);
     color: white;
 }
 
-/* SIDEBAR */
+/* =========================================
+   SIDEBAR
+========================================= */
+
 section[data-testid="stSidebar"] {
     background: linear-gradient(to bottom, #020617, #111827);
 }
@@ -178,63 +185,48 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* CUSTOM MENU BUTTON */
-button[title="View sidebar"] {
+/* =========================================
+   SIDEBAR BUTTON
+========================================= */
 
-    position: fixed !important;
-
-    top: 15px !important;
-    left: 15px !important;
-
-    z-index: 999999 !important;
-
-    width: 52px !important;
-    height: 52px !important;
-
-    border-radius: 14px !important;
+button[kind="header"] {
 
     background: rgba(255,255,255,0.08) !important;
 
-    backdrop-filter: blur(10px);
+    border-radius: 12px !important;
+
+    width: 50px !important;
+    height: 50px !important;
 
     border: none !important;
 
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* REMOVE DEFAULT SVG */
-button[title="View sidebar"] svg {
-    display: none !important;
-}
-
-/* CUSTOM ☰ */
-button[title="View sidebar"]::before {
-
-    content: "☰";
-
-    font-size: 30px;
-
-    color: white;
-
-    font-weight: bold;
-}
-
-/* HOVER */
-button[title="View sidebar"]:hover {
-
-    background: rgba(255,255,255,0.15) !important;
-
-    transform: scale(1.05);
+    backdrop-filter: blur(10px);
 
     transition: 0.3s;
 }
 
-/* TITLES */
+/* HOVER */
+
+button[kind="header"]:hover {
+
+    background: rgba(255,255,255,0.15) !important;
+
+    transform: scale(1.05);
+}
+
+/* ICON */
+
+button[kind="header"] svg {
+
+    color: white !important;
+
+    width: 24px !important;
+    height: 24px !important;
+}
+
+/* =========================================
+   TITLES
+========================================= */
 
 .main-title {
 
@@ -258,7 +250,9 @@ button[title="View sidebar"]:hover {
     margin-bottom: 40px;
 }
 
-/* GLASS CARD */
+/* =========================================
+   CARDS
+========================================= */
 
 .card {
 
@@ -275,7 +269,9 @@ button[title="View sidebar"]:hover {
     margin-bottom: 30px;
 }
 
-/* BUTTONS */
+/* =========================================
+   BUTTONS
+========================================= */
 
 .stButton > button {
 
@@ -309,7 +305,9 @@ button[title="View sidebar"]:hover {
     );
 }
 
-/* DOWNLOAD BUTTON */
+/* =========================================
+   DOWNLOAD BUTTON
+========================================= */
 
 [data-testid="stDownloadButton"] button {
 
@@ -334,7 +332,9 @@ button[title="View sidebar"]:hover {
     color: white !important;
 }
 
-/* METRICS */
+/* =========================================
+   METRICS
+========================================= */
 
 [data-testid="metric-container"] {
 
@@ -345,7 +345,9 @@ button[title="View sidebar"]:hover {
     padding: 15px;
 }
 
-/* SLIDER */
+/* =========================================
+   SLIDER
+========================================= */
 
 .stSlider p {
 
@@ -354,7 +356,9 @@ button[title="View sidebar"]:hover {
     font-size: 18px;
 }
 
-/* FOOTER */
+/* =========================================
+   FOOTER
+========================================= */
 
 .footer {
 
@@ -367,7 +371,9 @@ button[title="View sidebar"]:hover {
     padding: 20px;
 }
 
-/* MOBILE */
+/* =========================================
+   MOBILE
+========================================= */
 
 @media (max-width: 768px) {
 
@@ -387,9 +393,9 @@ button[title="View sidebar"]:hover {
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
+# =========================================
 # SIDEBAR
-# =========================
+# =========================================
 
 st.sidebar.title("🌸 AI Navigation")
 
@@ -403,9 +409,9 @@ Built using:
 - Scikit-learn
 """)
 
-# =========================
+# =========================================
 # TITLE
-# =========================
+# =========================================
 
 st.markdown(
     "<div class='main-title'>🌸 AI Flower Prediction</div>",
@@ -417,9 +423,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# =========================
+# =========================================
 # WELCOME CARD
-# =========================
+# =========================================
 
 st.markdown("""
 <div class='card'>
@@ -432,17 +438,15 @@ This AI system predicts Iris flower species using Machine Learning algorithms.
 
 - ✅ Real-time Flower Prediction
 - ✅ AI Confidence Score
-- ✅ Dashboard Analytics
-- ✅ Dataset Upload
 - ✅ Download PDF Report
 - ✅ Modern Responsive UI
 
 </div>
 """, unsafe_allow_html=True)
 
-# =========================
+# =========================================
 # METRICS
-# =========================
+# =========================================
 
 col1, col2, col3 = st.columns(3)
 
@@ -455,9 +459,9 @@ with col2:
 with col3:
     st.metric("Dataset Samples", "150")
 
-# =========================
+# =========================================
 # PREDICTION SECTION
-# =========================
+# =========================================
 
 st.markdown("""
 <div class='card'>
@@ -499,9 +503,9 @@ with col2:
         0.2
     )
 
-# =========================
+# =========================================
 # PREDICT BUTTON
-# =========================
+# =========================================
 
 if st.button("🚀 Predict Flower"):
 
@@ -545,7 +549,7 @@ if st.button("🚀 Predict Flower"):
             confidence
         )
 
-        # DOWNLOAD PDF
+        # DOWNLOAD BUTTON
         with open(
             "prediction_report.pdf",
             "rb"
@@ -558,9 +562,9 @@ if st.button("🚀 Predict Flower"):
                 mime="application/pdf"
             )
 
-# =========================
+# =========================================
 # FOOTER
-# =========================
+# =========================================
 
 st.markdown("""
 <div class='footer'>
