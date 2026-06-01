@@ -127,14 +127,13 @@ st.markdown("""
 
 /* REMOVE TOP SPACE */
 .block-container {
-    padding-top: 0rem !important;
+    padding-top: 1rem !important;
     padding-bottom: 0rem !important;
 }
 
-/* REMOVE HEADER */
+/* TRANSPARENT HEADER */
 header[data-testid="stHeader"] {
-    height: 0rem;
-    background: transparent;
+    background: rgba(0,0,0,0);
 }
 
 /* REMOVE TOOLBAR */
@@ -163,13 +162,14 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* MOBILE SIDEBAR BUTTON */
+/* SIDEBAR BUTTON */
 [data-testid="collapsedControl"] {
-    display: block !important;
+    display: flex !important;
+    visibility: visible !important;
     color: white !important;
 }
 
-/* SIDEBAR TOGGLE ICON */
+/* MENU BUTTON */
 button[kind="header"] {
     color: white !important;
 }
