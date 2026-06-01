@@ -18,11 +18,13 @@ model = joblib.load("models/best_model.pkl")
 # LOAD SCALER
 scaler = joblib.load("models/scaler.pkl")
 
-# CUSTOM PDF CLASS
+
+# PDF CLASS
 class PDF(FPDF):
 
     def rounded_rect(self, x, y, w, h, r, style=''):
         self.rect(x, y, w, h, style)
+
 
 # PDF FUNCTION
 def create_pdf(prediction, confidence):
@@ -36,7 +38,7 @@ def create_pdf(prediction, confidence):
     pdf.rect(0, 0, 210, 297, 'F')
 
     # TITLE
-    pdf.set_font("Arial", 'B', 26)
+    pdf.set_font("Arial", 'B', 24)
     pdf.set_text_color(255, 255, 255)
 
     pdf.cell(
@@ -48,7 +50,7 @@ def create_pdf(prediction, confidence):
     )
 
     # SUBTITLE
-    pdf.set_font("Arial", '', 14)
+    pdf.set_font("Arial", '', 13)
     pdf.set_text_color(148, 163, 184)
 
     pdf.cell(
@@ -61,7 +63,7 @@ def create_pdf(prediction, confidence):
 
     pdf.ln(25)
 
-    # RESULT BOX
+    # RESULT CARD
     pdf.set_fill_color(30, 41, 59)
 
     pdf.rounded_rect(
@@ -121,7 +123,8 @@ def create_pdf(prediction, confidence):
 
     pdf.output("prediction_report.pdf")
 
-# PREMIUM CSS
+
+# CUSTOM CSS
 st.markdown("""
 <style>
 
@@ -133,10 +136,10 @@ st.markdown("""
 
 /* TRANSPARENT HEADER */
 header[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
+    background: transparent;
 }
 
-/* REMOVE DECORATION */
+/* REMOVE STREAMLIT DECORATION */
 [data-testid="stDecoration"] {
     display: none;
 }
@@ -157,29 +160,51 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* SIDEBAR TOGGLE BUTTON */
+/* HAMBURGER MENU BUTTON */
 [data-testid="collapsedControl"] {
+
     position: fixed !important;
+
     top: 15px !important;
     left: 15px !important;
+
     z-index: 999999 !important;
+
+    width: 50px !important;
+    height: 50px !important;
+
+    border-radius: 14px !important;
+
+    background: rgba(255,255,255,0.08) !important;
+
+    backdrop-filter: blur(10px);
+
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-/* SIDEBAR SVG ICON */
+/* HIDE DEFAULT ARROW */
 [data-testid="collapsedControl"] svg {
-    width: 28px !important;
-    height: 28px !important;
-    color: white !important;
-    fill: white !important;
+    display: none !important;
 }
 
-/* HOVER */
+/* CUSTOM MENU ICON */
+[data-testid="collapsedControl"]::before {
+    content: "☰";
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+}
+
+/* MENU HOVER */
 [data-testid="collapsedControl"]:hover {
-    background: rgba(255,255,255,0.08) !important;
-    border-radius: 10px !important;
+    background: rgba(255,255,255,0.15) !important;
+    transform: scale(1.05);
+    transition: 0.3s;
 }
 
 /* TEXT */
@@ -204,7 +229,7 @@ html, body, [class*="css"] {
     margin-bottom: 40px;
 }
 
-/* CARD */
+/* GLASS CARD */
 .card {
     background: rgba(255,255,255,0.06);
     padding: 35px;
@@ -222,37 +247,55 @@ html, body, [class*="css"] {
     border: none;
     font-size: 20px;
     font-weight: bold;
-    background: linear-gradient(to right, #06b6d4, #3b82f6);
+
+    background: linear-gradient(
+        to right,
+        #06b6d4,
+        #3b82f6
+    );
+
     color: white;
 }
 
 /* BUTTON HOVER */
 .stButton>button:hover {
-    background: linear-gradient(to right, #3b82f6, #06b6d4);
+
+    background: linear-gradient(
+        to right,
+        #3b82f6,
+        #06b6d4
+    );
 }
 
 /* DOWNLOAD BUTTON */
 [data-testid="stDownloadButton"] button {
+
     width: 100%;
     height: 55px;
+
     border-radius: 14px;
+
     border: none;
+
     font-size: 18px;
     font-weight: bold;
-    background: linear-gradient(to right, #06b6d4, #3b82f6);
+
+    background: linear-gradient(
+        to right,
+        #06b6d4,
+        #3b82f6
+    );
+
     color: white !important;
 }
 
-/* DOWNLOAD BUTTON HOVER */
-[data-testid="stDownloadButton"] button:hover {
-    background: linear-gradient(to right, #3b82f6, #06b6d4);
-    color: white !important;
-}
-
-/* METRIC */
+/* METRICS */
 [data-testid="metric-container"] {
+
     background: rgba(255,255,255,0.06);
+
     border-radius: 18px;
+
     padding: 15px;
 }
 
@@ -270,11 +313,11 @@ html, body, [class*="css"] {
     padding: 20px;
 }
 
-/* MOBILE RESPONSIVE */
+/* MOBILE */
 @media (max-width: 768px) {
 
     .main-title {
-        font-size: 38px;
+        font-size: 42px;
     }
 
     .sub-title {
@@ -293,7 +336,7 @@ html, body, [class*="css"] {
 st.sidebar.title("🌸 AI Navigation")
 
 st.sidebar.info("""
-### AI Flower Prediction System
+### AI Flower Prediction
 
 Built using:
 - Python
@@ -387,7 +430,7 @@ with col2:
         0.2
     )
 
-# PREDICT BUTTON
+# BUTTON
 if st.button("🚀 Predict Flower"):
 
     with st.spinner("Analyzing Flower Data..."):
