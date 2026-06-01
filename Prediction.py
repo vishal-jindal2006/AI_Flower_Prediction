@@ -136,11 +136,6 @@ header[data-testid="stHeader"] {
     background: rgba(0,0,0,0);
 }
 
-/* REMOVE TOOLBAR */
-[data-testid="stToolbar"] {
-    display: none;
-}
-
 /* REMOVE DECORATION */
 [data-testid="stDecoration"] {
     display: none;
@@ -162,16 +157,29 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* SIDEBAR BUTTON */
+/* SIDEBAR TOGGLE BUTTON */
 [data-testid="collapsedControl"] {
+    position: fixed !important;
+    top: 15px !important;
+    left: 15px !important;
+    z-index: 999999 !important;
     display: flex !important;
     visibility: visible !important;
-    color: white !important;
+    opacity: 1 !important;
 }
 
-/* MENU BUTTON */
-button[kind="header"] {
+/* SIDEBAR SVG ICON */
+[data-testid="collapsedControl"] svg {
+    width: 28px !important;
+    height: 28px !important;
     color: white !important;
+    fill: white !important;
+}
+
+/* HOVER */
+[data-testid="collapsedControl"]:hover {
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 10px !important;
 }
 
 /* TEXT */
@@ -337,7 +345,7 @@ with col2:
 with col3:
     st.metric("Dataset Samples", "150")
 
-# PREDICTION SECTION
+# PREDICTION CARD
 st.markdown("""
 <div class='card'>
 <h1>🤖 Predict Flower</h1>
