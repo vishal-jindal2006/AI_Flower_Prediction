@@ -9,7 +9,7 @@ st.set_page_config(
     page_title="AI Flower Prediction",
     page_icon="🌸",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # LOAD MODEL
@@ -61,7 +61,7 @@ def create_pdf(prediction, confidence):
 
     pdf.ln(25)
 
-    # BOX
+    # RESULT BOX
     pdf.set_fill_color(30, 41, 59)
 
     pdf.rounded_rect(
@@ -163,6 +163,17 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
+/* MOBILE SIDEBAR BUTTON */
+[data-testid="collapsedControl"] {
+    display: block !important;
+    color: white !important;
+}
+
+/* SIDEBAR TOGGLE ICON */
+button[kind="header"] {
+    color: white !important;
+}
+
 /* TEXT */
 html, body, [class*="css"] {
     color: white !important;
@@ -251,6 +262,22 @@ html, body, [class*="css"] {
     padding: 20px;
 }
 
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+    .main-title {
+        font-size: 38px;
+    }
+
+    .sub-title {
+        font-size: 18px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -278,7 +305,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# INTRO
+# INTRO CARD
 st.markdown("""
 <div class='card'>
 
@@ -310,7 +337,7 @@ with col2:
 with col3:
     st.metric("Dataset Samples", "150")
 
-# PREDICTION CARD
+# PREDICTION SECTION
 st.markdown("""
 <div class='card'>
 <h1>🤖 Predict Flower</h1>
@@ -352,7 +379,7 @@ with col2:
         0.2
     )
 
-# PREDICT
+# PREDICT BUTTON
 if st.button("🚀 Predict Flower"):
 
     with st.spinner("Analyzing Flower Data..."):
