@@ -4,7 +4,10 @@ import joblib
 import time
 from fpdf import FPDF
 
+# =========================
 # PAGE CONFIG
+# =========================
+
 st.set_page_config(
     page_title="AI Flower Prediction",
     page_icon="🌸",
@@ -12,155 +15,151 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# =========================
 # LOAD MODEL
-model = joblib.load("models/best_model.pkl")
+# =========================
 
-# LOAD SCALER
+model = joblib.load("models/best_model.pkl")
 scaler = joblib.load("models/scaler.pkl")
 
+# =========================
+# PDF REPORT
+# =========================
 
-# PDF CLASS
 class PDF(FPDF):
 
-    def rounded_rect(self, x, y, w, h, r, style=''):
-        self.rect(x, y, w, h, style)
+    def header(self):
 
+        self.set_fill_color(15, 23, 42)
+        self.rect(0, 0, 210, 297, 'F')
 
-# PDF FUNCTION
+        self.set_font("Arial", "B", 24)
+        self.set_text_color(255, 255, 255)
+
+        self.ln(10)
+
+        self.cell(
+            190,
+            10,
+            "AI FLOWER PREDICTION REPORT",
+            ln=True,
+            align="C"
+        )
+
+        self.ln(5)
+
+        self.set_font("Arial", "", 12)
+        self.set_text_color(180, 180, 180)
+
+        self.cell(
+            190,
+            10,
+            "Generated using Machine Learning",
+            ln=True,
+            align="C"
+        )
+
+        self.ln(20)
+
+    def footer(self):
+
+        self.set_y(-20)
+
+        self.set_font("Arial", "", 10)
+
+        self.set_text_color(150, 150, 150)
+
+        self.cell(
+            0,
+            10,
+            "Developed by Vishal Jindal",
+            align="C"
+        )
+
+# =========================
+# CREATE PDF
+# =========================
+
 def create_pdf(prediction, confidence):
 
     pdf = PDF()
 
     pdf.add_page()
 
-    # BACKGROUND
-    pdf.set_fill_color(15, 23, 42)
-    pdf.rect(0, 0, 210, 297, 'F')
-
-    # TITLE
-    pdf.set_font("Arial", 'B', 24)
-    pdf.set_text_color(255, 255, 255)
-
-    pdf.cell(
-        200,
-        20,
-        txt="AI FLOWER PREDICTION REPORT",
-        ln=True,
-        align='C'
-    )
-
-    # SUBTITLE
-    pdf.set_font("Arial", '', 13)
-    pdf.set_text_color(148, 163, 184)
-
-    pdf.cell(
-        200,
-        10,
-        txt="Generated using Machine Learning",
-        ln=True,
-        align='C'
-    )
-
-    pdf.ln(25)
-
     # RESULT BOX
     pdf.set_fill_color(30, 41, 59)
 
-    pdf.rounded_rect(
-        20,
-        70,
-        170,
-        80,
-        5,
-        'F'
-    )
+    pdf.rounded_rect = lambda x, y, w, h, r, style='': pdf.rect(x, y, w, h, style)
 
-    # RESULT TITLE
-    pdf.set_xy(30, 85)
+    pdf.rounded_rect(25, 80, 160, 70, 5, 'F')
 
-    pdf.set_font("Arial", 'B', 18)
+    # TITLE
+    pdf.set_xy(35, 95)
+
+    pdf.set_font("Arial", "B", 18)
+
     pdf.set_text_color(255, 255, 255)
 
-    pdf.cell(
-        100,
-        10,
-        txt="Prediction Result"
-    )
+    pdf.cell(100, 10, "Prediction Result")
 
     # FLOWER
-    pdf.set_xy(30, 105)
+    pdf.set_xy(35, 115)
 
-    pdf.set_font("Arial", '', 16)
+    pdf.set_font("Arial", "", 15)
 
     pdf.cell(
         100,
         10,
-        txt=f"Flower: {prediction}"
+        f"Flower: {prediction}"
     )
 
     # CONFIDENCE
-    pdf.set_xy(30, 125)
+    pdf.set_xy(35, 130)
 
     pdf.cell(
         100,
         10,
-        txt=f"Confidence Score: {confidence:.2f}%"
-    )
-
-    # FOOTER
-    pdf.set_y(240)
-
-    pdf.set_font("Arial", '', 11)
-
-    pdf.set_text_color(148, 163, 184)
-
-    pdf.cell(
-        190,
-        8,
-        txt="Developed by Vishal Jindal",
-        align='C'
+        f"Confidence Score: {confidence:.2f}%"
     )
 
     pdf.output("prediction_report.pdf")
 
-
+# =========================
 # CUSTOM CSS
+# =========================
+
 st.markdown("""
 <style>
 
 /* REMOVE TOP SPACE */
 .block-container {
     padding-top: 1rem !important;
-    padding-bottom: 0rem !important;
 }
 
-/* HEADER */
+/* REMOVE STREAMLIT DEFAULTS */
+
 header[data-testid="stHeader"] {
     background: transparent;
 }
 
-/* REMOVE STREAMLIT DECORATION */
 [data-testid="stDecoration"] {
     display: none;
 }
 
-/* HIDE STREAMLIT MENU */
 #MainMenu {
     visibility: hidden;
 }
 
-/* HIDE TOP TOOLBAR */
+footer {
+    visibility: hidden;
+}
+
 [data-testid="stToolbar"] {
     display: none !important;
 }
 
-/* HIDE DEFAULT SIDEBAR ARROW */
+/* REMOVE >> BUTTON */
 button[kind="header"] {
-    display: none !important;
-}
-
-/* HIDE STREAMLIT NAV COLLAPSE */
-[data-testid="stSidebarNavCollapseButton"] {
     display: none !important;
 }
 
@@ -175,13 +174,12 @@ section[data-testid="stSidebar"] {
     background: linear-gradient(to bottom, #020617, #111827);
 }
 
-/* SIDEBAR TEXT */
 section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* CUSTOM HAMBURGER BUTTON */
-[data-testid="collapsedControl"] {
+/* CUSTOM MENU BUTTON */
+button[title="View sidebar"] {
 
     position: fixed !important;
 
@@ -199,6 +197,8 @@ section[data-testid="stSidebar"] * {
 
     backdrop-filter: blur(10px);
 
+    border: none !important;
+
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -208,12 +208,12 @@ section[data-testid="stSidebar"] * {
 }
 
 /* REMOVE DEFAULT SVG */
-[data-testid="collapsedControl"] svg {
+button[title="View sidebar"] svg {
     display: none !important;
 }
 
-/* CUSTOM MENU ICON */
-[data-testid="collapsedControl"]::before {
+/* CUSTOM ☰ */
+button[title="View sidebar"]::before {
 
     content: "☰";
 
@@ -225,7 +225,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* HOVER */
-[data-testid="collapsedControl"]:hover {
+button[title="View sidebar"]:hover {
 
     background: rgba(255,255,255,0.15) !important;
 
@@ -234,7 +234,8 @@ section[data-testid="stSidebar"] * {
     transition: 0.3s;
 }
 
-/* TITLE */
+/* TITLES */
+
 .main-title {
 
     text-align: center;
@@ -246,7 +247,6 @@ section[data-testid="stSidebar"] * {
     color: white;
 }
 
-/* SUBTITLE */
 .sub-title {
 
     text-align: center;
@@ -259,6 +259,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* GLASS CARD */
+
 .card {
 
     background: rgba(255,255,255,0.06);
@@ -274,7 +275,8 @@ section[data-testid="stSidebar"] * {
     margin-bottom: 30px;
 }
 
-/* BUTTON */
+/* BUTTONS */
+
 .stButton > button {
 
     width: 100%;
@@ -298,7 +300,6 @@ section[data-testid="stSidebar"] * {
     color: white;
 }
 
-/* BUTTON HOVER */
 .stButton > button:hover {
 
     background: linear-gradient(
@@ -309,6 +310,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* DOWNLOAD BUTTON */
+
 [data-testid="stDownloadButton"] button {
 
     width: 100%;
@@ -333,6 +335,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* METRICS */
+
 [data-testid="metric-container"] {
 
     background: rgba(255,255,255,0.06);
@@ -343,6 +346,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* SLIDER */
+
 .stSlider p {
 
     color: white !important;
@@ -351,6 +355,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* FOOTER */
+
 .footer {
 
     text-align: center;
@@ -363,6 +368,7 @@ section[data-testid="stSidebar"] * {
 }
 
 /* MOBILE */
+
 @media (max-width: 768px) {
 
     .main-title {
@@ -381,7 +387,10 @@ section[data-testid="stSidebar"] * {
 </style>
 """, unsafe_allow_html=True)
 
+# =========================
 # SIDEBAR
+# =========================
+
 st.sidebar.title("🌸 AI Navigation")
 
 st.sidebar.info("""
@@ -394,7 +403,10 @@ Built using:
 - Scikit-learn
 """)
 
+# =========================
 # TITLE
+# =========================
+
 st.markdown(
     "<div class='main-title'>🌸 AI Flower Prediction</div>",
     unsafe_allow_html=True
@@ -405,7 +417,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# INTRO
+# =========================
+# WELCOME CARD
+# =========================
+
 st.markdown("""
 <div class='card'>
 
@@ -425,7 +440,10 @@ This AI system predicts Iris flower species using Machine Learning algorithms.
 </div>
 """, unsafe_allow_html=True)
 
+# =========================
 # METRICS
+# =========================
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -437,7 +455,10 @@ with col2:
 with col3:
     st.metric("Dataset Samples", "150")
 
-# PREDICTION
+# =========================
+# PREDICTION SECTION
+# =========================
+
 st.markdown("""
 <div class='card'>
 <h1>🤖 Predict Flower</h1>
@@ -478,6 +499,10 @@ with col2:
         0.2
     )
 
+# =========================
+# PREDICT BUTTON
+# =========================
+
 if st.button("🚀 Predict Flower"):
 
     with st.spinner("Analyzing Flower Data..."):
@@ -514,11 +539,13 @@ if st.button("🚀 Predict Flower"):
 
         st.progress(int(confidence))
 
+        # CREATE PDF
         create_pdf(
             predicted_flower,
             confidence
         )
 
+        # DOWNLOAD PDF
         with open(
             "prediction_report.pdf",
             "rb"
@@ -531,7 +558,10 @@ if st.button("🚀 Predict Flower"):
                 mime="application/pdf"
             )
 
+# =========================
 # FOOTER
+# =========================
+
 st.markdown("""
 <div class='footer'>
 
