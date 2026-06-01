@@ -1,0 +1,5 @@
+venv/
+__pycache__/
+*.pyc
+prediction_report.pdf
+messages.csv
