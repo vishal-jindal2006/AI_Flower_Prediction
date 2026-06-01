@@ -144,6 +144,16 @@ header[data-testid="stHeader"] {
     display: none;
 }
 
+/* REMOVE DEFAULT STREAMLIT MENU */
+#MainMenu {
+    visibility: hidden;
+}
+
+/* REMOVE DEFAULT SIDEBAR BUTTON */
+button[kind="header"] {
+    display: none !important;
+}
+
 /* MAIN BACKGROUND */
 .stApp {
     background: linear-gradient(to right, #020617, #0f172a);
@@ -160,7 +170,7 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* HAMBURGER MENU BUTTON */
+/* HAMBURGER BUTTON */
 [data-testid="collapsedControl"] {
 
     position: fixed !important;
@@ -192,24 +202,26 @@ section[data-testid="stSidebar"] * {
     display: none !important;
 }
 
-/* CUSTOM MENU ICON */
+/* CUSTOM ☰ ICON */
 [data-testid="collapsedControl"]::before {
+
     content: "☰";
+
     font-size: 28px;
+
     color: white;
+
     font-weight: bold;
 }
 
-/* MENU HOVER */
+/* HOVER EFFECT */
 [data-testid="collapsedControl"]:hover {
-    background: rgba(255,255,255,0.15) !important;
-    transform: scale(1.05);
-    transition: 0.3s;
-}
 
-/* TEXT */
-html, body, [class*="css"] {
-    color: white !important;
+    background: rgba(255,255,255,0.15) !important;
+
+    transform: scale(1.05);
+
+    transition: 0.3s;
 }
 
 /* TITLE */
@@ -218,7 +230,6 @@ html, body, [class*="css"] {
     font-size: 65px;
     font-weight: bold;
     color: white;
-    margin-top: 0px;
 }
 
 /* SUBTITLE */
@@ -231,21 +242,33 @@ html, body, [class*="css"] {
 
 /* GLASS CARD */
 .card {
+
     background: rgba(255,255,255,0.06);
+
     padding: 35px;
+
     border-radius: 25px;
+
     backdrop-filter: blur(14px);
+
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+
     margin-bottom: 30px;
 }
 
 /* BUTTON */
-.stButton>button {
+.stButton > button {
+
     width: 100%;
+
     height: 55px;
+
     border-radius: 14px;
+
     border: none;
+
     font-size: 20px;
+
     font-weight: bold;
 
     background: linear-gradient(
@@ -258,7 +281,7 @@ html, body, [class*="css"] {
 }
 
 /* BUTTON HOVER */
-.stButton>button:hover {
+.stButton > button:hover {
 
     background: linear-gradient(
         to right,
@@ -271,6 +294,7 @@ html, body, [class*="css"] {
 [data-testid="stDownloadButton"] button {
 
     width: 100%;
+
     height: 55px;
 
     border-radius: 14px;
@@ -278,6 +302,7 @@ html, body, [class*="css"] {
     border: none;
 
     font-size: 18px;
+
     font-weight: bold;
 
     background: linear-gradient(
@@ -301,15 +326,21 @@ html, body, [class*="css"] {
 
 /* SLIDER */
 .stSlider p {
+
     color: white !important;
+
     font-size: 18px;
 }
 
 /* FOOTER */
 .footer {
+
     text-align: center;
+
     color: #94a3b8;
+
     margin-top: 50px;
+
     padding: 20px;
 }
 
@@ -356,7 +387,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# INTRO CARD
+# INTRO
 st.markdown("""
 <div class='card'>
 
@@ -430,7 +461,7 @@ with col2:
         0.2
     )
 
-# BUTTON
+# PREDICTION
 if st.button("🚀 Predict Flower"):
 
     with st.spinner("Analyzing Flower Data..."):
@@ -457,7 +488,6 @@ if st.button("🚀 Predict Flower"):
 
         predicted_flower = flowers[prediction[0]]
 
-        # RESULT
         st.success(
             f"Prediction: {predicted_flower}"
         )
@@ -468,13 +498,13 @@ if st.button("🚀 Predict Flower"):
 
         st.progress(int(confidence))
 
-        # CREATE PDF
+        # PDF
         create_pdf(
             predicted_flower,
             confidence
         )
 
-        # DOWNLOAD BUTTON
+        # DOWNLOAD
         with open(
             "prediction_report.pdf",
             "rb"
