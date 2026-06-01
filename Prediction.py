@@ -63,7 +63,7 @@ def create_pdf(prediction, confidence):
 
     pdf.ln(25)
 
-    # RESULT CARD
+    # RESULT BOX
     pdf.set_fill_color(30, 41, 59)
 
     pdf.rounded_rect(
@@ -134,7 +134,7 @@ st.markdown("""
     padding-bottom: 0rem !important;
 }
 
-/* TRANSPARENT HEADER */
+/* HEADER */
 header[data-testid="stHeader"] {
     background: transparent;
 }
@@ -144,13 +144,23 @@ header[data-testid="stHeader"] {
     display: none;
 }
 
-/* REMOVE DEFAULT STREAMLIT MENU */
+/* HIDE STREAMLIT MENU */
 #MainMenu {
     visibility: hidden;
 }
 
-/* REMOVE DEFAULT SIDEBAR BUTTON */
+/* HIDE TOP TOOLBAR */
+[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+/* HIDE DEFAULT SIDEBAR ARROW */
 button[kind="header"] {
+    display: none !important;
+}
+
+/* HIDE STREAMLIT NAV COLLAPSE */
+[data-testid="stSidebarNavCollapseButton"] {
     display: none !important;
 }
 
@@ -170,7 +180,7 @@ section[data-testid="stSidebar"] * {
     color: white !important;
 }
 
-/* HAMBURGER BUTTON */
+/* CUSTOM HAMBURGER BUTTON */
 [data-testid="collapsedControl"] {
 
     position: fixed !important;
@@ -180,8 +190,8 @@ section[data-testid="stSidebar"] * {
 
     z-index: 999999 !important;
 
-    width: 50px !important;
-    height: 50px !important;
+    width: 52px !important;
+    height: 52px !important;
 
     border-radius: 14px !important;
 
@@ -197,24 +207,24 @@ section[data-testid="stSidebar"] * {
     opacity: 1 !important;
 }
 
-/* HIDE DEFAULT ARROW */
+/* REMOVE DEFAULT SVG */
 [data-testid="collapsedControl"] svg {
     display: none !important;
 }
 
-/* CUSTOM ☰ ICON */
+/* CUSTOM MENU ICON */
 [data-testid="collapsedControl"]::before {
 
     content: "☰";
 
-    font-size: 28px;
+    font-size: 30px;
 
     color: white;
 
     font-weight: bold;
 }
 
-/* HOVER EFFECT */
+/* HOVER */
 [data-testid="collapsedControl"]:hover {
 
     background: rgba(255,255,255,0.15) !important;
@@ -226,17 +236,25 @@ section[data-testid="stSidebar"] * {
 
 /* TITLE */
 .main-title {
+
     text-align: center;
+
     font-size: 65px;
+
     font-weight: bold;
+
     color: white;
 }
 
 /* SUBTITLE */
 .sub-title {
+
     text-align: center;
+
     font-size: 24px;
+
     color: #cbd5e1;
+
     margin-bottom: 40px;
 }
 
@@ -419,14 +437,13 @@ with col2:
 with col3:
     st.metric("Dataset Samples", "150")
 
-# PREDICTION CARD
+# PREDICTION
 st.markdown("""
 <div class='card'>
 <h1>🤖 Predict Flower</h1>
 </div>
 """, unsafe_allow_html=True)
 
-# INPUTS
 col1, col2 = st.columns(2)
 
 with col1:
@@ -461,7 +478,6 @@ with col2:
         0.2
     )
 
-# PREDICTION
 if st.button("🚀 Predict Flower"):
 
     with st.spinner("Analyzing Flower Data..."):
@@ -498,13 +514,11 @@ if st.button("🚀 Predict Flower"):
 
         st.progress(int(confidence))
 
-        # PDF
         create_pdf(
             predicted_flower,
             confidence
         )
 
-        # DOWNLOAD
         with open(
             "prediction_report.pdf",
             "rb"
