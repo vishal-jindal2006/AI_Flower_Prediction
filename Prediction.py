@@ -225,7 +225,7 @@ button[kind="header"]:hover {
 
 button[kind="header"] svg {
 
-    color: #e5e7eb !important;
+    color: #d1d5db !important;
 
     width: 38px !important;
     height: 38px !important;
